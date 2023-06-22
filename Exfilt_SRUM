@@ -1,0 +1,30 @@
+##########################  USAGE  ###########################
+############ python script.py C:\path\to\file\SRUM.db ########
+##############################################################
+import sys
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Get the SRUM.db file name from command line arguments
+if len(sys.argv) < 2:
+    print("Please provide the path to the SRUM.db file as an argument.")
+    exit()
+
+file_srum = sys.argv[1]
+
+# Read the SRUM.db file using Pandas
+try:
+    df = pd.read_csv(file_srum, delimiter=';', header=None, usecols=[1, 3],
+                     names=['Date', 'Data usage'], parse_dates=[0])
+except FileNotFoundError:
+    print(f"File not found {file_srum}")
+    exit()
+
+# plot the data usage graph
+plt.plot(df['Date'], df['Data usage'])
+plt.xlabel('Date')
+plt.ylabel('Data usage')
+plt.title('Data usage by time')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
